@@ -86,7 +86,12 @@ incorrect.
 
 ## SMBList
 
-SMBList will take the output file from "SMBHunt.pl" (or a file of shares separated by a newline in the format of "\\server\share") and will perform a recursive directory listing of those shares using the credentials provided.  SMBList will attempt to authenticate to the share until a valid credential is found from the list provided.  It will then store the directory listings in a subfolder specified.
+SMBList will take the output file from "SMBHunt.pl" (or a file of shares
+separated by a newline in the format of "\\server\share") and will perform a
+recursive directory listing of those shares using the credentials provided.
+SMBList will attempt to authenticate to the share until a valid credential is
+found from the list provided.  It will then store the directory listings in a
+subfolder specified.
 
 This makes the file listing extremely easy to grep through!
 
@@ -114,28 +119,38 @@ This makes the file listing extremely easy to grep through!
 
     -c, --credentials <credential/file>
 
-> A single credential or file of credentails to test. Credentials are accepted in the form of 'Domain\Username:Password' separated by a new line (if providing a file)
+> A single credential or file of credentails to test. Credentials are accepted
+> in the form of 'Domain\Username:Password' separated by a new line (if
+> providing a file)
 
     -s, --shares <share/file>
 
-> A single share or file of shares to test against. Each credential will be tested for authorization until a valid one is found. Shares should be in the form "\\server\share", separated by a new line (if providing a file)
+> A single share or file of shares to test against. Each credential will be
+> tested for authorization until a valid one is found. Shares should be in the
+> form "\\server\share", separated by a new line (if providing a file)
 
     -o, --output <nonexistent directory>
 
-> A new directory will be created named this. For protection of output, the script cannot be run with this directory existing. It must be a directory that does not exist!
+> A new directory will be created named this. For protection of output, the
+> script cannot be run with this directory existing. It must be a directory that
+> does not exist!
 
 
     -m, --maxexec <seconds>
 
-> The maximum amonut of time spent dumping any one share, in seconds. Default is 300 seconds (5 minutes)
+> The maximum amonut of time spent dumping any one share, in seconds. Default is
+> 300 seconds (5 minutes)
 
     -f, --force
 
-> Never remove a share from the list if it errors and never remove a credential if it gets a logon failed message. If you are using this flag, make sure you know what you are doing!  You might lock out accounts if you aren't careful!
+> Never remove a share from the list if it errors and never remove a credential
+> if it gets a logon failed message. If you are using this flag, make sure you
+> know what you are doing!  You might lock out accounts if you aren't careful!
 
     -n, --nocreds
 
-> Don't include credentials in the output.  WARNING: If you use this switch, you cannot use the output with the next tool, "SMBGrab.pl".
+> Don't include credentials in the output.  WARNING: If you use this switch, you
+> cannot use the output with the next tool, "SMBGrab.pl".
 
 
 ---------------------------------
@@ -143,9 +158,13 @@ This makes the file listing extremely easy to grep through!
 
 ## SMBGrab
 
-File listings from SMBList.pl can be pipped into this utility to grab the files wanted from the shares.  The original listing from SMBList.pl should be "grepped" before passing to this script, otherwise all files will be downloaded (which is the equivalent of copying the entire share and is bad)
+File listings from SMBList.pl can be pipped into this utility to grab the files
+wanted from the shares.  The original listing from SMBList.pl should be
+"grepped" before passing to this script, otherwise all files will be downloaded
+(which is the equivalent of copying the entire share and is bad)
 
-**This script _requires_ SMBList.pl be pipped in to it.  Look at "Example Usage" below**
+**This script _requires_ SMBList.pl be pipped in to it.  Look at "Example Usage"
+below**
 
 ### Requirements:
 
@@ -167,19 +186,26 @@ File listings from SMBList.pl can be pipped into this utility to grab the files 
 
 ### Arguments:
 
-If no arguments are supplied, the file is retrieved from the share and displayed to the user.  It is not saved.
+If no arguments are supplied, the file is retrieved from the share and displayed
+to the user.  It is not saved.
 
     -s, --savedir <directory>
 
-> A directory to save all the grabbed files to. If this directory does not exist, it will be created.  Using this argument saves the files but prevents the files from being printed to the screen
+> A directory to save all the grabbed files to. If this directory does not
+> exist, it will be created.  Using this argument saves the files but prevents
+> the files from being printed to the screen
 
     -a, --all
 
-> Read all files pipped in.  Without this switch, the script protects against accidentally downloading massive amounts of files by limiting the input to 100 files.
+> Read all files pipped in.  Without this switch, the script protects against
+> accidentally downloading massive amounts of files by limiting the input to 100
+> files.
 
     -n, --noedit
 
-> This will preserve the files to their original form. If this switch is not used, a note will be made at the bottom of each file containing information about the file metadata (read/write times, file location in the Share, etc)
+> This will preserve the files to their original form. If this switch is not
+> used, a note will be made at the bottom of each file containing information
+> about the file metadata (read/write times, file location in the Share, etc)
 
     -h, --help
 
