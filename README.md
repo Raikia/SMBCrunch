@@ -1,4 +1,4 @@
-ShareCrunch
+SMBCrunch
 ======
 
 One of the most time consuming tasks as a red teamer is diving into filesystems
