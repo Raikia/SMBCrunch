@@ -43,7 +43,7 @@ to only one share on the system**
 
 ### Example Usage:
 
-    ./SMBHunt.pl -a 'testdomain\john:hunter2' -i portscan443.gnmap -o shares_found.txt
+    ./SMBHunt.pl -a 'testdomain\john:hunter2' -i portscan445.gnmap -o shares_found.txt
 
 ### Help to show all available options:
 
