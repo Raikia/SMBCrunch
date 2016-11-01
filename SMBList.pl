@@ -125,7 +125,7 @@ BLOCKOUT
 			my $tempFile = `cat temporary_running_file.txt`;
 			$tempFile = "NO_DATA\n" if ($tempFile =~ /^\s*$/);
 			my @lines = split "\n", $tempFile;
-			unless ($lines[0] =~ /ACCESS_DENIED/ or $lines[0] =~ /LOGON_FAILURE/ or $lines[0] =~ /NT_STATUS_UNSUCCESSFUL/ or $lines[0] =~ /INVALID_DEVICE_REQUEST/ or $lines[0] =~ /ACCOUNT_LOCKED_OUT/ or $lines[0] =~ /WRONG_PASSWORD/ or $lines[0] =~ /NETWORK_UNREACHABLE/ or $lines[0] =~ /NO_DATA/ or $lines[0] =~ /NT_STATUS_HOST_UNREACHABLE/ or $lines[0] =~ /NT_STATUS_NO_LOGON_SERVERS/) {
+			unless ($lines[0] =~ /BAD_NETWORK_NAME/ or $lines[0] =~ /ACCESS_DENIED/ or $lines[0] =~ /LOGON_FAILURE/ or $lines[0] =~ /NT_STATUS_UNSUCCESSFUL/ or $lines[0] =~ /INVALID_DEVICE_REQUEST/ or $lines[0] =~ /ACCOUNT_LOCKED_OUT/ or $lines[0] =~ /WRONG_PASSWORD/ or $lines[0] =~ /NETWORK_UNREACHABLE/ or $lines[0] =~ /NO_DATA/ or $lines[0] =~ /NT_STATUS_HOST_UNREACHABLE/ or $lines[0] =~ /NT_STATUS_NO_LOGON_SERVERS/) {
 				my $newShareFileName = $share;
 				$newShareFileName =~ s/\\\\//;
 				$newShareFileName =~ s/\\/_/;
@@ -163,6 +163,7 @@ BLOCKOUT
 				print "\b"x35;
 				printf("%-35s\n", "Access Denied") if ($lines[0] =~ /ACCESS_DENIED/);
 				printf("%-35s\n", "Logon Failure") if ($lines[0] =~ /LOGON_FAILURE/);
+				printf("%-35s\n", "Bad Network Name") if ($lines[0] =~ /BAD_NETWORK_NAME/);
 				printf("%-35s\n", "Unsuccessful Connection") if ($lines[0] =~ /NT_STATUS_UNSUCCESSFUL/);
 				printf("%-35s\n", "Invalid Device") if ($lines[0] =~ /INVALID_DEVICE_REQUEST/);
 				printf("%-35s\n", "Account Locked") if ($lines[0] =~ /ACCOUNT_LOCKED_OUT/);
