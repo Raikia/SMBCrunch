@@ -87,7 +87,7 @@ BLOCKOUT
             }
 
             if ($b =~ /^Disk\|/i or $b =~ /^Printer\|/i) {
-                if ($b =~ /^(Disk|Printer)\|(.+)\|(.+)$/) {
+                if ($b =~ /^(Disk|Printer)\|(.+)\|(.*)$/) {
                     my $res = $2;
                     unless ($nohidden and $res =~ /\$/)
                     {
@@ -97,7 +97,7 @@ BLOCKOUT
                 }
             }
             if (!$noipc and $b =~ /^IPC/i) {
-                if ($b =~ /^IPC\|(.+)\|(.+)$/) {
+                if ($b =~ /^IPC\|(.+)\|(.*)$/) {
                     my $res = $1;
                     unless ($nohidden and $res =~ /\$/)
                     {
