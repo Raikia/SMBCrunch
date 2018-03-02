@@ -69,7 +69,7 @@ BLOCKOUT
     open($printOut, ">$outputFile") or die $! if ($outputFile);
     my $gotError = 0;
     foreach my $a (@ips_with_445) {
-        my @output = `smbclient -L $a -N -A $temp_file 2> /dev/null`;
+        my @output = `smbclient -g -L $a -N -A $temp_file 2> /dev/null`;
         my $startCapture = 0;
         foreach my $b (@output) {
             if ($b =~ /NT_STATUS_LOGON_FAILURE/i and !$force) {
@@ -86,9 +86,9 @@ BLOCKOUT
                 }
             }
 
-            if ($b =~ /\s+Disk\s+/i or $b =~ /\s+Printer\s+/i) {
-                if ($b =~ /^\s+([^\s]+)\s/) {
-                    my $res = $1;
+            if ($b =~ /^Disk\|/i or $b =~ /^Printer\|/i) {
+                if ($b =~ /^(Disk|Printer)\|(.+)\|(.*)$/) {
+                    my $res = $2;
                     unless ($nohidden and $res =~ /\$/)
                     {
                         print $printOut "\\\\$a\\$res\n" if ($printOut);
@@ -96,8 +96,8 @@ BLOCKOUT
                     }
                 }
             }
-            if (!$noipc and $b =~ /\s+IPC\s+/i) {
-                if ($b =~ /^\s+([^\s]+)\s/) {
+            if (!$noipc and $b =~ /^IPC/i) {
+                if ($b =~ /^IPC\|(.+)\|(.*)$/) {
                     my $res = $1;
                     unless ($nohidden and $res =~ /\$/)
                     {
