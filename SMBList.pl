@@ -118,6 +118,7 @@ BLOCKOUT
 			printf '%-35s %-35s %-35s %-35s', $share, $username, $password, 'Running...';
 			#print "smbclient -N -A '$tempAuthFile' '$share' -c 'recurse;dir' 2>&1 > temporary_running_file.txt";
 			#die;
+            $share =~ s/'/'\\''/g;
 			my $smbclient_cmd = `timeout $inputMaxExec smbclient -N -A '$tempAuthFile' '$share' -c 'recurse;dir' 2>&1 > temporary_running_file.txt`;
 			unlink($tempAuthFile);
 			print "\b"x35;
@@ -127,8 +128,9 @@ BLOCKOUT
 			my @lines = split "\n", $tempFile;
 			unless ($lines[0] =~ /BAD_NETWORK_NAME/ or $lines[0] =~ /ACCESS_DENIED/ or $lines[0] =~ /LOGON_FAILURE/ or $lines[0] =~ /NT_STATUS_UNSUCCESSFUL/ or $lines[0] =~ /INVALID_DEVICE_REQUEST/ or $lines[0] =~ /ACCOUNT_LOCKED_OUT/ or $lines[0] =~ /WRONG_PASSWORD/ or $lines[0] =~ /NETWORK_UNREACHABLE/ or $lines[0] =~ /NO_DATA/ or $lines[0] =~ /NT_STATUS_HOST_UNREACHABLE/ or $lines[0] =~ /NT_STATUS_NO_LOGON_SERVERS/) {
 				my $newShareFileName = $share;
-				$newShareFileName =~ s/\\\\//;
-				$newShareFileName =~ s/\\/_/;
+				$newShareFileName =~ s/\\\\//g;
+				$newShareFileName =~ s/\\/_/g;
+				$newShareFileName =~ s/\//-/g;
 				my $currentPath = "";
 				my $fh_share_file;
 				open($fh_share_file, ">$newShareFileName") or die "Could not save a new file! $!\n";
