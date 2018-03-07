@@ -66,6 +66,8 @@ BLOCKOUT
 		close(AUTHFILE);
 		my $short_filename = '...'.substr($file, -35);
 		printf "%-45s",$short_filename;
+		my $unquoted_filename = $file;
+		$file =~ s/'/'"'"'/g;
 		my @lines = `smbclient -N -A $tempAuthFile '\\\\$server\\$sharename' -c 'get "$file" temp_out.txt' 2> /dev/null`;
 		if (scalar(@lines) != 0) {
 			if ($lines[0] =~ /NT_STATUS_FILE_IS_A_DIRECTORY/) {
@@ -90,11 +92,14 @@ BLOCKOUT
 		}
 		my $new_file_name = $file;
 		$new_file_name =~ s/\\/_/g;
+		my $new_unquoted_file_name = $unquoted_filename;
+		$new_unquoted_file_name =~ s/\\/_/g;
 		$new_file_name = $server.'_'.$sharename.'_'.$new_file_name;
+		$new_unquoted_file_name = $server.'_'.$sharename.'_'.$new_unquoted_file_name;
 		`mv temp_out.txt '$new_file_name'`;
 		if ($inputNoEdit eq '') {
-			open(NEWFILE, ">>$new_file_name");
-			print NEWFILE "\n# File from \\\\$server\\$sharename\\$file using $username:$password\n";
+			open(NEWFILE, ">>$new_unquoted_file_name");
+			print NEWFILE "\n# File from \\\\$server\\$sharename\\$unquoted_filename using $username:$password\n";
 			my @data_lines = `smbclient -N -A $tempAuthFile '\\\\$server\\$sharename' -c 'allinfo "$file"' 2> /dev/null`;
 			for my $data_line (@data_lines) {
 				chomp $data_line;
@@ -105,10 +110,10 @@ BLOCKOUT
 		}
 		unlink($tempAuthFile);
 		if ($inputSave eq '') {
-			open(FILE, "<$new_file_name");
+			open(FILE, "<$new_unquoted_file_name");
 			my @output = <FILE>;
 			print "\n--------------------------------------\n";
-			print "# File from \\\\$server\\$sharename\\$file using $username:$password\n";
+			print "# File from \\\\$server\\$sharename\\$new_unquoted_file_name using $username:$password\n";
 			for my $out_line (@output) {
 				print $out_line;
 			}
